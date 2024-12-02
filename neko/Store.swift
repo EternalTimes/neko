@@ -12,6 +12,7 @@ enum Direction {
     case west
 }
 
+@MainActor
 final class Store: ObservableObject {
     private var direction: Direction
     private var ticksSinceLastMove = 0
@@ -95,7 +96,7 @@ final class Store: ObservableObject {
     }
 }
 
-private let step: CGFloat = 16
+private let step: CGFloat = 2
 
 private func nextDirection(_ mouseLoc: NSPoint, _ nekoLoc: NSPoint) -> Direction {
     let d = delta(nekoLoc, mouseLoc)
