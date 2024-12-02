@@ -1,6 +1,7 @@
 import Cocoa
 import SwiftUI
 
+@MainActor
 @main
 class AppDelegate: NSObject, NSApplicationDelegate {
     var window: NSWindow!
@@ -18,9 +19,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         window.center()
 
         let store = Store(withMouseLoc: NSEvent.mouseLocation, andNekoLoc: window.frame.origin)
-            let contentView = ContentView(store: store)
+        let contentView = ContentView(store: store)
         let hostingView = NSHostingView(rootView: contentView)
-        Timer.scheduledTimer(withTimeInterval: 0.16, repeats: true) { _ in
+
+        Timer.scheduledTimer(withTimeInterval: 0.075, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
             DispatchQueue.main.async {
                 self.window.setFrameOrigin(store.nextTick(NSEvent.mouseLocation))
             }
